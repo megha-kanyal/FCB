@@ -1,90 +1,149 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-export default function FuelForm({ onAdd }) {
+function FuelForm() {
   const [formData, setFormData] = useState({
+    bus_id: "",
+    driver_id: "",
     date: "",
-    distance: "",
-    fuel: "",
-    cost: "",
+    odometer: "",
+    liters_filled: "",
+    price_per_liter: "",
+    fuel_station: "",
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Auto-calculate total cost
+    const total_cost =
+      parseFloat(formData.liters_filled || 0) *
+      parseFloat(formData.price_per_liter || 0);
+
+    const dataToSend = {
+      ...formData,
+      total_cost,
+    };
+
     try {
-      const res = await fetch("http://localhost:5000/api/fuel/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await axios.post(
+        "http://localhost:5000/api/fuel",
+        dataToSend
+      );
+      alert(" Fuel log added successfully!");
+      console.log(res.data);
+
+      // Reset the form
+      setFormData({
+        bus_id: "",
+        driver_id: "",
+        date: "",
+        odometer: "",
+        liters_filled: "",
+        price_per_liter: "",
+        fuel_station: "",
       });
-      const data = await res.json();
-      if (res.ok) {
-        alert(" Fuel log added!");
-        setFormData({ date: "", distance: "", fuel: "", cost: "" });
-        onAdd(); // Refresh list
-      } else {
-        alert(data.message || "Error adding log");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error connecting to server");
+    } catch (error) {
+      console.error(" Error submitting form:", error);
+      alert("Error adding fuel log! Check console for details.");
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-2xl shadow-md w-full max-w-md mx-auto"
+      className="max-w-lg mx-auto p-4 border shadow-md rounded-lg bg-white"
     >
       <h2 className="text-xl font-semibold mb-4 text-center">Add Fuel Log</h2>
 
-      <div className="grid gap-4">
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          className="border p-2 rounded"
-          required
-        />
-        <input
-          type="number"
-          name="distance"
-          placeholder="Distance (km)"
-          value={formData.distance}
-          onChange={handleChange}
-          className="border p-2 rounded"
-          required
-        />
-        <input
-          type="number"
-          name="fuel"
-          placeholder="Fuel (litres)"
-          value={formData.fuel}
-          onChange={handleChange}
-          className="border p-2 rounded"
-          required
-        />
-        <input
-          type="number"
-          name="cost"
-          placeholder="Cost (₹)"
-          value={formData.cost}
-          onChange={handleChange}
-          className="border p-2 rounded"
-          required
-        />
+      <input type="text" name="bus_id" value={formData.bus_id} onChange={handleChange} placeholder="Bus ID" className="w-full mb-2 p-2 border rounded"required/>
+
+      <input
+        type="text"
+        name="driver_id"
+        value={formData.driver_id}
+        onChange={handleChange}
+        placeholder="Driver ID"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      <input
+        type="date"
+        name="date"
+        value={formData.date}
+        onChange={handleChange}
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      <input
+        type="number"
+        name="odometer"
+        value={formData.odometer}
+        onChange={handleChange}
+        placeholder="Odometer Reading"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      <input
+        type="number"
+        name="liters_filled"
+        value={formData.liters_filled}
+        onChange={handleChange}
+        placeholder="Liters Filled"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      <input
+        type="number"
+        name="price_per_liter"
+        value={formData.price_per_liter}
+        onChange={handleChange}
+        placeholder="Price per Liter (₹)"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      <input
+        type="text"
+        name="fuel_station"
+        value={formData.fuel_station}
+        onChange={handleChange}
+        placeholder="Fuel Station"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+
+      {/* Show calculated total cost */}
+      <div className="mt-2 text-right text-gray-700">
+        Total Cost:{" "}
+        <span className="font-semibold">
+          ₹
+          {formData.liters_filled && formData.price_per_liter
+            ? (
+                parseFloat(formData.liters_filled) *
+                parseFloat(formData.price_per_liter)
+              ).toFixed(2)
+            : "0.00"}
+        </span>
       </div>
 
       <button
         type="submit"
-        className="mt-4 w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
+        className="w-full p-2 bg-blue-600 text-white rounded mt-4 hover:bg-blue-700 transition"
       >
-        Save Entry
+        Add Fuel Log
       </button>
     </form>
   );
 }
+
+export default FuelForm;
