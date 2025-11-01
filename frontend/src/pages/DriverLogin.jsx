@@ -1,8 +1,6 @@
-// src/pages/DriverLogin.jsx
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 export default function DriverLogin() {
   const [driverId, setDriverId] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +16,7 @@ export default function DriverLogin() {
       localStorage.setItem("driverToken", res.data.token);
       navigate("/driver-dashboard");
     } catch (err) {
-      alert("Invalid credentials");
+      alert(err.response?.data?.error || "Invalid credentials");
     }
   };
 
@@ -35,6 +33,7 @@ export default function DriverLogin() {
           className="border p-2 w-full mb-3 rounded"
           value={driverId}
           onChange={(e) => setDriverId(e.target.value)}
+          required
         />
         <input
           type="password"
@@ -42,6 +41,7 @@ export default function DriverLogin() {
           className="border p-2 w-full mb-3 rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <button
           type="submit"
@@ -49,6 +49,16 @@ export default function DriverLogin() {
         >
           Login
         </button>
+
+        <p className="text-sm text-center mt-3">
+          Don’t have an account?{" "}
+          <span
+            onClick={() => navigate("/driver/signup")}
+            className="text-green-700 cursor-pointer hover:underline"
+          >
+            Sign up
+          </span>
+        </p>
       </form>
     </div>
   );
