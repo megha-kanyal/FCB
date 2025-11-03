@@ -43,7 +43,7 @@ export async function initDatabase() {
   // Create schema
   const schema = fs.readFileSync(path.join(process.cwd(), "sql", "initial_schema.sql"), "utf8");
   await pool.query(schema);
-  console.log("✅ Database initialized and schema ensured.");
+  console.log("Database initialized and schema ensured.");
   return pool;
 }
 

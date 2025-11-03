@@ -9,12 +9,12 @@ export default function DriverLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5173/api/driver/login", {
+      const res = await axios.post("http://localhost:5000/api/driver/login", {
         driverId,
         password,
       });
       localStorage.setItem("driverToken", res.data.token);
-      navigate("/driver-dashboard");
+      navigate("/driver/dashboard");
     } catch (err) {
       alert(err.response?.data?.error || "Invalid credentials");
     }

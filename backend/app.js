@@ -26,7 +26,7 @@ app.use(express.json());
 (async () => {
   try {
     await initDatabase();
-    console.log("✅ Database ready");
+    console.log("Database ready");
 
     app.use("/api/admin", adminRoutes);
     app.use("/api/bus", busRoutes);
@@ -36,9 +36,9 @@ app.use(express.json());
     app.use("/api/payment", paymentRoutes);
 
     const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
-    console.error("❌ Failed to initialize DB:", err);
+    console.error("Failed to initialize DB:", err);
     process.exit(1);
   }
 })();

@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS trip_log (
     FOREIGN KEY (bus_id) REFERENCES bus(bus_id) ON DELETE CASCADE
 );
 
+
 -- Fuel Refill Table
 CREATE TABLE IF NOT EXISTS fuel_refill (
     refill_id INT AUTO_INCREMENT PRIMARY KEY,

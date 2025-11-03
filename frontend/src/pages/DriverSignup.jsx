@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function DriverSignup() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     password: "",
     license_no: "",
     phone_no: "",
@@ -20,9 +19,9 @@ export default function DriverSignup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5173/api/driver/signup", formData);
+      await axios.post("http://localhost:5000/api/driver/signup", formData);
       alert("Signup successful! Please login.");
-      navigate("/driver-login");
+      navigate("/driver/login");
     } catch (err) {
       alert(err.response?.data?.error || "Signup failed");
     }
@@ -40,14 +39,6 @@ export default function DriverSignup() {
           type="text"
           name="name"
           placeholder="Full Name"
-          className="border p-2 w-full mb-3 rounded"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
           className="border p-2 w-full mb-3 rounded"
           onChange={handleChange}
           required

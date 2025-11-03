@@ -1,15 +1,7 @@
-// import AddTripForm from "../components/AddTripForm";
-
-// export default function DriverDashboard() {
-//   return (
-//     <div className="p-10">
-//       <h1 className="text-3xl font-bold mb-6">Driver Dashboard</h1>
-//       <AddTripForm />
-//     </div>
-//   );
-// }
 // src/pages/DriverDashboard.jsx
 import { useEffect, useState } from "react";
+import AddTripForm from "../components/AddTripForm";
+import FuelForm from "../components/FuelForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -37,12 +29,11 @@ export default function DriverDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold">Driver Dashboard</h1>
-      {driver ? (
-        <p className="mt-2 text-gray-700">Welcome, {driver.name}</p>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <div className="p-10">
+       <h1 className="text-3xl font-bold mb-6">Driver Dashboard</h1>
+      <AddTripForm />
+      <FuelForm/>
+     </div>
     </div>
   );
 }
