@@ -1,9 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import PetrolLogin from "./pages/PetrolLogin";
+import PetrolDashboard from "./pages/PetrolDashboard";
 import DriverLogin from "./pages/DriverLogin";
 import DriverSignup from "./pages/DriverSignup";
 import DriverDashboard from "./pages/DriverDashboard";
+
 import Home from "./pages/Home";
 
 function App() {
@@ -21,6 +24,11 @@ function App() {
         <Route path="/driver/login" element={<DriverLogin />} />
         <Route path="/driver/signup" element={<DriverSignup />} />
         <Route path="/driver/dashboard" element={<DriverDashboard />} />
+
+        {/* Petrol Routes */}
+        <Route path="/petrol/login" element={<PetrolLogin />} />
+        <Route path="/petrol/dashboard" element={<PetrolDashboard />} />
+
       </Routes>
     </Router>
   );

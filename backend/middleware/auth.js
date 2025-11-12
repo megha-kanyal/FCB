@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "113133200071972197912005"; // ⚠️ move this to .env in production
+const JWT_SECRET = "113133200071972197912005";
 
 export function generateToken(payload) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });

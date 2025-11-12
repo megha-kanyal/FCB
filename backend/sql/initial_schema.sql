@@ -8,6 +8,28 @@ CREATE TABLE IF NOT EXISTS admin (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Petrol Table
+CREATE TABLE IF NOT EXISTS petrol (
+    petrol_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('petrol') DEFAULT 'petrol',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bills (
+  bill_id INT AUTO_INCREMENT PRIMARY KEY,
+  petrol_id INT NOT NULL,
+  bill_photo VARCHAR(255) NOT NULL,
+  qr_code VARCHAR(255),
+  total_amount DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (petrol_id) REFERENCES petrol(petrol_id)
+);
+
+
+
 -- Driver Table
 CREATE TABLE IF NOT EXISTS driver (
     driver_id INT AUTO_INCREMENT PRIMARY KEY,

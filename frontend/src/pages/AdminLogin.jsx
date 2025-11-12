@@ -22,7 +22,7 @@ export default function AdminLogin() {
 
       if (res.ok) {
         localStorage.setItem("adminToken", data.token);
-        alert("✅ Login successful!");
+        alert("Login successful!");
         navigate("/admin/dashboard");
       } else {
         alert(data.error || "Login failed");

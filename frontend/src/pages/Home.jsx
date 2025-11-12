@@ -10,15 +10,21 @@ export default function Home() {
       <div className="space-x-4">
         <button
           onClick={() => navigate("/admin/login")}
-          className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow"
+          className="bg-blue-400 text-white px-6 py-3 rounded-lg shadow"
         >
           Admin Login
         </button>
         <button
           onClick={() => navigate("/driver/login")}
-          className="bg-green-500 text-white px-6 py-3 rounded-lg shadow"
+          className="bg-yellow-500 text-white px-6 py-3 rounded-lg shadow"
         >
           Driver Login
+        </button>
+        <button
+          onClick={() => navigate("/petrol/login")}
+          className="bg-blue-900 text-white px-6 py-3 rounded-lg shadow"
+        >
+          Petrol Login
         </button>
       </div>
     </div>
