@@ -12,7 +12,6 @@ import busRoutes from "./routes/bus.js";
 import driverRoutes from "./routes/driver.js";
 import tripRoutes from "./routes/trip.js";
 import fuelRoutes from "./routes/fuel.js";
-import paymentRoutes from "./routes/payment.js";
 import pumpRoutes from "./routes/pump.js";
 import billRoutes from "./routes/bill.js";
 
@@ -38,7 +37,6 @@ app.use(express.json());
     app.use("/api/driver", driverRoutes);
     app.use("/api/trip", tripRoutes);
     app.use("/api/fuel", fuelRoutes);
-    app.use("/api/payment", paymentRoutes);
     app.use("/api/pumps", pumpRoutes);
     app.use("/api/bill", billRoutes);
 

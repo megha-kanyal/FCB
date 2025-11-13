@@ -58,7 +58,7 @@ export async function addBus(req, res) {
       bus_id: result.insertId,
     });
   } catch (err) {
-    console.error("❌ Error in addBus:", err);
+    console.error(" Error in addBus:", err);
     if (err?.code === "ER_DUP_ENTRY") {
       return res.status(400).json({ error: "Plate number already exists" });
     }
