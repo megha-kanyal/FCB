@@ -1,32 +1,111 @@
-diff.astextplain.textconv=astextplain
-filter.lfs.clean=git-lfs clean -- %f
-filter.lfs.smudge=git-lfs smudge -- %f
-filter.lfs.process=git-lfs filter-process
-filter.lfs.required=true
-http.sslbackend=openssl
-http.sslcainfo=C:/Program Files/Git/mingw64/etc/ssl/certs/ca-bundle.crt
-core.autocrlf=true
-core.fscache=true
-core.symlinks=false
-pull.rebase=false
-credential.helper=manager
-credential.https://dev.azure.com.usehttppath=true
-init.defaultbranch=master
-user.name=megha-kanyal
-user.email=meghakanyal395@gmail.com
-http.postbuffer=524288000
-http.sslbackend=schannel
-filter.lfs.clean=git-lfs clean -- %f
-filter.lfs.smudge=git-lfs smudge -- %f
-filter.lfs.process=git-lfs filter-process
-filter.lfs.required=true
-core.repositoryformatversion=0
-core.filemode=false
-core.bare=false
-core.logallrefupdates=true
-core.symlinks=false
-core.ignorecase=true
-remote.origin.url=https://github.com/megha-kanyal/FCB.git
-remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
-user.name=megha-kanyal
-user.email=meghakanyal395@gmail.com
+mysql> show tables;
++-----------------------------+
+| Tables_in_college_transport |
++-----------------------------+
+| admin                       |
+| bills                       |
+| bus                         |
+| driver                      |
+| fuel_refill                 |
+| petrol                      |
+| petrol_pump                 |
+| trip_log                    |
++-----------------------------+
+
+
+mysql>
+// admin
+mysql> desc admin;
++------------+--------------+------+-----+-------------------+-------------------+
+| Field      | Type         | Null | Key | Default           | Extra             |
++------------+--------------+------+-----+-------------------+-------------------+
+| admin_id   | int          | NO   | PRI | NULL              | auto_increment    |
+| name       | varchar(100) | NO   |     | NULL              |                   |
+| email      | varchar(100) | NO   | UNI | NULL              |                   |
+| password   | varchar(255) | NO   |     | NULL              |                   |
+| created_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+--------------+------+-----+-------------------+-------------------+
+5 rows in set (0.01 sec)
+
+
+mysql> desc driver;
++------------+----------------+------+-----+-------------------+-------------------+
+| Field      | Type           | Null | Key | Default           | Extra             |
++------------+----------------+------+-----+-------------------+-------------------+
+| driver_id  | int            | NO   | PRI | NULL              | auto_increment    |
+| name       | varchar(100)   | NO   |     | NULL              |                   |
+| email      | varchar(100)   | NO   | UNI | NULL              |                   |
+| password   | varchar(255)   | NO   |     | NULL              |                   |
+| license_no | varchar(50)    | NO   | UNI | NULL              |                   |
+| phone_no   | varchar(15)    | YES  |     | NULL              |                   |
+| role       | enum('driver') | YES  |     | driver            |                   |
+| created_at | timestamp      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+----------------+------+-----+-------------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> desc bus;
++------------+-------------+------+-----+-------------------+-------------------+
+| Field      | Type        | Null | Key | Default           | Extra             |
++------------+-------------+------+-----+-------------------+-------------------+
+| bus_id     | int         | NO   | PRI | NULL              | auto_increment    |
+| plate_no   | varchar(20) | NO   | UNI | NULL              |                   |
+| model_no   | varchar(50) | YES  |     | NULL              |                   |
+| capacity   | int         | NO   |     | NULL              |                   |
+| added_by   | int         | YES  | MUL | NULL              |                   |
+| created_at | timestamp   | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+-------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> desc bills;
++--------------+---------------+------+-----+-------------------+-------------------+
+| Field        | Type          | Null | Key | Default           | Extra             |
++--------------+---------------+------+-----+-------------------+-------------------+
+| bill_id      | int           | NO   | PRI | NULL              | auto_increment    |
+| petrol_id    | int           | NO   | MUL | NULL              |                   |
+| bill_photo   | varchar(255)  | NO   |     | NULL              |                   |
+| qr_code      | varchar(255)  | YES  |     | NULL              |                   |
+| total_amount | decimal(10,2) | NO   |     | NULL              |                   |
+| created_at   | timestamp     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++--------------+---------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> desc petrol;
++------------+----------------+------+-----+-------------------+-------------------+
+| Field      | Type           | Null | Key | Default           | Extra             |
++------------+----------------+------+-----+-------------------+-------------------+
+| petrol_id  | int            | NO   | PRI | NULL              | auto_increment    |
+| name       | varchar(100)   | NO   |     | NULL              |                   |
+| email      | varchar(100)   | NO   | UNI | NULL              |                   |
+| password   | varchar(255)   | NO   |     | NULL              |                   |
+| role       | enum('petrol') | YES  |     | petrol            |                   |
+| created_at | timestamp      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+----------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> desc petrol_pump;
++------------+--------------+------+-----+-------------------+-------------------+
+| Field      | Type         | Null | Key | Default           | Extra             |
++------------+--------------+------+-----+-------------------+-------------------+
+| pump_id    | int          | NO   | PRI | NULL              | auto_increment    |
+| pump_name  | varchar(100) | NO   |     | NULL              |                   |
+| location   | varchar(255) | YES  |     | NULL              |                   |
+| created_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+--------------+------+-----+-------------------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> desc trip_log;
++------------------+----------------------+------+-----+---------+----------------+
+| Field            | Type                 | Null | Key | Default | Extra          |
++------------------+----------------------+------+-----+---------+----------------+
+| trip_id          | int                  | NO   | PRI | NULL    | auto_increment |
+| driver_id        | varchar(50)          | YES  |     | NULL    |                |
+| bus_id           | varchar(50)          | YES  |     | NULL    |                |
+| trip_date        | date                 | NO   |     | NULL    |                |
+| odometer_in      | int                  | YES  |     | NULL    |                |
+| odometer_out     | int                  | YES  |     | NULL    |                |
+| petrol_in_litre  | decimal(10,2)        | YES  |     | NULL    |                |
+| petrol_out_litre | decimal(10,2)        | YES  |     | NULL    |                |
+| trip_status      | enum('out','return') | YES  |     | out     |                |
++------------------+----------------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+

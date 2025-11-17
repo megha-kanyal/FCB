@@ -1,17 +1,23 @@
 import { useState } from "react";
-import axios from "axios";
 
 const AddBill = () => {
   const [amount, setAmount] = useState("");
   const [billPhoto, setBillPhoto] = useState(null);
   const [qrCode, setQrCode] = useState("");
-  const [petrolPumpId, setPetrolPumpId] = useState(1); // replace with actual logged-in pump ID
+  const petrolId = localStorage.getItem("petrolId");
+  const petrolPumpId = petrolId;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!amount || !billPhoto) {
       alert("Please enter all required fields.");
+      return;
+    }
+
+    if (!petrolPumpId) {
+      alert("Error: Petrol Pump not logged in.");
       return;
     }
 
@@ -22,64 +28,80 @@ const AddBill = () => {
     formData.append("billPhoto", billPhoto);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/bill/add", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const res = await fetch("http://localhost:5000/api/bill/add", {
+        method: "POST",
+        body: formData,
       });
 
       if (res.status === 201) {
-        alert("✅ Bill uploaded successfully!");
+        alert("Bill uploaded successfully!");
         setAmount("");
         setBillPhoto(null);
         setQrCode("");
       }
     } catch (err) {
       console.error("Error uploading bill:", err);
-      alert("❌ Failed to upload bill. Check console for details.");
+      alert("Failed to upload bill. Check console for details.");
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-6 border rounded-lg max-w-sm mx-auto mt-10 bg-white shadow-md"
-    >
-      <h2 className="text-xl font-bold mb-4 text-center">Add Bill</h2>
+    <div className="max-w-2xl mx-auto p-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 rounded-2xl">
+      <div className="bg-white rounded-2xl p-8">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-8">
+          Add Bill
+        </h2>
 
-      <label className="block mb-2 text-sm font-semibold">Total Amount (₹)</label>
-      <input
-        type="number"
-        placeholder="Enter total amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        className="border p-2 w-full mb-4 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-        required
-      />
+        <div className="space-y-6">
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Total Amount (₹)
+            </label>
+            <input
+              type="number"
+              placeholder="Enter total amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+              required
+            />
+          </div>
 
-      <label className="block mb-2 text-sm font-semibold">Upload Bill Photo</label>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setBillPhoto(e.target.files[0])}
-        className="border p-2 w-full mb-4 rounded-md"
-        required
-      />
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Upload Bill Photo
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setBillPhoto(e.target.files[0])}
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+              required
+            />
+          </div>
 
-      <label className="block mb-2 text-sm font-semibold">QR Code</label>
-      <input
-        type="text"
-        placeholder="Enter QR code if available"
-        value={qrCode}
-        onChange={(e) => setQrCode(e.target.value)}
-        className="border p-2 w-full mb-4 rounded-md"
-      />
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              QR Code
+            </label>
+            <input
+              type="text"
+              placeholder="Enter QR code if available"
+              value={qrCode}
+              onChange={(e) => setQrCode(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full transition"
-      >
-        Upload Bill
-      </button>
-    </form>
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold px-6 py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200"
+          >
+            Upload Bill
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

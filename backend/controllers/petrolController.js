@@ -44,7 +44,10 @@ export async function loginPetrol(req, res) {
       email: petrol.email,
     });
 
-    return res.json({ message: "Login successful", token });
+    return res.json({ 
+      message: "Login successful", token,
+      petrolId: petrol.petrol_id 
+    });
   } catch (err) {
   console.error("LOGIN ERROR:", err);
   return res.status(500).json({ error: err.message || "Server error" });

@@ -1,12 +1,10 @@
 import path from "path";
 import { getPool } from "../db.js";
 
-// ✅ Add Bill
 export const addBill = async (req, res) => {
   try {
     const pool = getPool();
 
-    // match frontend field names
     const { petrol_pump_id, amount, qr_code } = req.body;
     const billPhoto = req.file ? req.file.filename : null;
 
@@ -36,23 +34,21 @@ export const addBill = async (req, res) => {
   }
 };
 
-// ✅ Get All Bills (for Admin Dashboard)
 export const getAllBills = async (req, res) => {
   try {
     const pool = getPool();
     const [rows] = await pool.query(`
       SELECT 
-  b.bill_id AS id,
-  b.petrol_id,
-  p.name AS pump_name,
-  b.bill_photo,
-  b.qr_code,
-  b.total_amount AS amount,
-  b.created_at
-FROM bills b
-JOIN petrol p ON b.petrol_id = p.petrol_id
-ORDER BY b.created_at DESC
-
+      b.bill_id AS id,
+      b.petrol_id,
+      p.name AS pump_name,
+      b.bill_photo,
+      b.qr_code,
+      b.total_amount AS amount,
+      b.created_at
+      FROM bills b
+      JOIN petrol p ON b.petrol_id = p.petrol_id
+      ORDER BY b.created_at DESC
     `);
 
     res.json(rows);

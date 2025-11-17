@@ -22,6 +22,7 @@ export default function PetrolLogin() {
 
       if (res.ok) {
         localStorage.setItem("petrolToken", data.token);
+        localStorage.setItem("petrolId", data.petrolId);
         alert(" Login successful!");
         navigate("/petrol/dashboard");
       } else {

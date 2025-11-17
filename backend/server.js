@@ -33,6 +33,7 @@ app.use(express.json());
 
     app.use("/api/admin", adminRoutes);
     app.use("/api/petrol", petrolRoutes);
+    app.use("/uploads", express.static("uploads"));
     app.use("/api/bus", busRoutes);
     app.use("/api/driver", driverRoutes);
     app.use("/api/trip", tripRoutes);

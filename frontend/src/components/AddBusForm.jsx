@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export default function AddBusForm({ onAdd }) {
@@ -32,7 +33,7 @@ export default function AddBusForm({ onAdd }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to add bus");
 
-      alert(" Bus added successfully!");
+      alert("Bus added successfully!");
       setForm({ plate_no: "", model_no: "", capacity: "" });
       if (onAdd) onAdd();
     } catch (err) {
@@ -42,45 +43,66 @@ export default function AddBusForm({ onAdd }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 shadow rounded-lg w-full max-w-md space-y-3"
-    >
-      <h2 className="text-xl font-semibold mb-2">Add New Bus</h2>
+    <div className="max-w-2xl mx-auto p-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 rounded-2xl">
+      <div className="bg-white rounded-2xl p-8">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-8">
+          Add New Bus
+        </h2>
 
-      <input
-        type="text"
-        name="plate_no"
-        placeholder="Plate No"
-        className="border p-2 w-full rounded"
-        value={form.plate_no}
-        onChange={handleChange}
-        required
-      />
+        <div className="space-y-6">
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Plate Number
+            </label>
+            <input
+              type="text"
+              name="plate_no"
+              placeholder="e.g., ABC-1234"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+              value={form.plate_no}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <input
-        type="text"
-        name="model_no"
-        placeholder="Model No"
-        className="border p-2 w-full rounded"
-        value={form.model_no}
-        onChange={handleChange}
-        required
-      />
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Model Number
+            </label>
+            <input
+              type="text"
+              name="model_no"
+              placeholder="e.g., Volvo B9R"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+              value={form.model_no}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <input
-        type="number"
-        name="capacity"
-        placeholder="Capacity"
-        className="border p-2 w-full rounded"
-        value={form.capacity}
-        onChange={handleChange}
-        required
-      />
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Seating Capacity
+            </label>
+            <input
+              type="number"
+              name="capacity"
+              placeholder="e.g., 50"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors text-gray-800"
+              value={form.capacity}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <button className="bg-blue-600 text-white px-4 py-2 rounded w-full">
-        Add Bus
-      </button>
-    </form>
+          <button 
+            onClick={handleSubmit}
+            className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold px-6 py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200"
+          >
+            Add Bus
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

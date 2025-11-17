@@ -63,25 +63,44 @@ CREATE TABLE IF NOT EXISTS bus (
 
 -- Trip Log Table
 CREATE TABLE IF NOT EXISTS trip_log (
-    trip_id INT AUTO_INCREMENT PRIMARY KEY,
-    driver_id INT NOT NULL,
-    bus_id INT NOT NULL,
+    trip_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    driver_id INT,
+    bus_id INT,
     trip_date DATE NOT NULL,
-    odometer_in INT NOT NULL,
     odometer_out INT NOT NULL,
-    petrol_in_litre DECIMAL(8,2) NOT NULL,
-    petrol_out_litre DECIMAL(8,2) NOT NULL,
-    mileage DECIMAL(8,2) GENERATED ALWAYS AS (
-        CASE
-            WHEN (odometer_out - odometer_in) > 0 AND (petrol_in_litre - petrol_out_litre) > 0
-            THEN (odometer_out - odometer_in) / (petrol_in_litre - petrol_out_litre)
-            ELSE NULL
-        END
-    ) STORED,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (driver_id) REFERENCES driver(driver_id) ON DELETE CASCADE,
-    FOREIGN KEY (bus_id) REFERENCES bus(bus_id) ON DELETE CASCADE
+    odometer_in INT DEFAULT NULL,
+    petrol_out_litre DECIMAL(10,2) NOT NULL,
+    petrol_in_litre DECIMAL(10,2) DEFAULT NULL,
+    mileage DECIMAL(10,2) DEFAULT NULL,
+    trip_status ENUM('out','return') DEFAULT 'out',
+    FOREIGN KEY (driver_id) REFERENCES driver(driver_id) ON DELETE SET NULL,
+    FOREIGN KEY (bus_id) REFERENCES bus(bus_id) ON DELETE SET NULL
 );
+DROP TRIGGER IF EXISTS calculate_mileage_before_update;
+CREATE TRIGGER calculate_mileage_before_update
+BEFORE UPDATE ON trip_log
+FOR EACH ROW
+BEGIN
+    DECLARE distance FLOAT;
+    DECLARE fuel_used FLOAT;
+
+    IF NEW.trip_status = 'return' THEN
+        IF NEW.odometer_in IS NOT NULL
+           AND NEW.petrol_in_litre IS NOT NULL THEN
+
+            SET distance = NEW.odometer_in - OLD.odometer_out;
+            SET fuel_used = OLD.petrol_out_litre - NEW.petrol_in_litre;
+
+            IF distance > 0 AND fuel_used > 0 THEN
+                SET NEW.mileage = ROUND(distance / fuel_used, 2);
+            ELSE
+                SET NEW.mileage = NULL;
+            END IF;
+
+        END IF;
+    END IF;
+END;
+
 
 
 -- Fuel Refill Table

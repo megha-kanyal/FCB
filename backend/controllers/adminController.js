@@ -20,7 +20,7 @@ export async function registerAdmin(req, res) {
 
     return res.json({ message: "Admin registered successfully" });
   } catch (err) {
-  console.error("🔥 REGISTER ERROR:", err);
+  console.error("REGISTER ERROR:", err);
   return res.status(500).json({ error: err.message || "Server error" });
 }
 
@@ -51,8 +51,7 @@ export async function loginAdmin(req, res) {
 
     return res.json({ message: "Login successful", token });
   } catch (err) {
-  console.error("🔥 LOGIN ERROR:", err);
+  console.error("LOGIN ERROR:", err);
   return res.status(500).json({ error: err.message || "Server error" });
 }
-
 }
